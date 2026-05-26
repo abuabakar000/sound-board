@@ -11,7 +11,7 @@
   gap: 40px;
 }
 
-/* Header Deck */
+/* Brand Header */
 .brand {
   display: flex;
   flex-direction: column;
@@ -28,14 +28,15 @@
 
 .logoIcon {
   color: var(--accent-primary);
-  filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.6));
+  filter: drop-shadow(0 0 10px rgba(230, 0, 0, 0.6));
+  animation: float 3s ease-in-out infinite;
 }
 
 .logoText {
   font-size: 2.2rem;
   font-weight: 800;
   letter-spacing: -1px;
-  background: linear-gradient(135deg, #fff 0%, #cbd5e1 50%, var(--accent-primary) 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #e5e7eb 50%, var(--accent-primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -61,10 +62,10 @@
   }
 }
 
-/* Single Box / Pad Style */
+/* Single Box / Pad Style - Pure neutral dark glass with red custom active states */
 .padCard {
   position: relative;
-  background: rgba(22, 28, 45, 0.35);
+  background: rgba(12, 12, 12, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -83,17 +84,17 @@
 
 .padCard:hover {
   transform: translateY(-6px);
-  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.3);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 
-              0 0 30px rgba(var(--color-rgb, 139, 92, 246), 0.15);
-  background: rgba(30, 38, 62, 0.5);
+  border-color: rgba(var(--color-rgb, 230, 0, 0), 0.35);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 
+              0 0 30px rgba(var(--color-rgb, 230, 0, 0), 0.18);
+  background: rgba(22, 12, 12, 0.75);
 }
 
 .padCardActive {
-  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.8) !important;
-  background: rgba(var(--color-rgb, 139, 92, 246), 0.12) !important;
-  box-shadow: 0 0 35px rgba(var(--color-rgb, 139, 92, 246), 0.35),
-              inset 0 0 20px rgba(var(--color-rgb, 139, 92, 246), 0.1) !important;
+  border-color: rgba(var(--color-rgb, 230, 0, 0), 0.8) !important;
+  background: rgba(var(--color-rgb, 230, 0, 0), 0.12) !important;
+  box-shadow: 0 0 35px rgba(var(--color-rgb, 230, 0, 0), 0.35),
+              inset 0 0 20px rgba(var(--color-rgb, 230, 0, 0), 0.1) !important;
   transform: scale(0.97) translateY(2px) !important;
 }
 
@@ -107,7 +108,7 @@
   border-radius: 8px;
   font-size: 1.1rem;
   font-weight: 800;
-  color: #fff;
+  color: #ffffff;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
@@ -118,9 +119,9 @@
 }
 
 .padCard:hover .keyBadge {
-  background: rgba(var(--color-rgb, 139, 92, 246), 0.25);
-  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.4);
-  box-shadow: 0 0 8px rgba(var(--color-rgb, 139, 92, 246), 0.3);
+  background: rgba(var(--color-rgb, 230, 0, 0), 0.25);
+  border-color: rgba(var(--color-rgb, 230, 0, 0), 0.4);
+  box-shadow: 0 0 8px rgba(var(--color-rgb, 230, 0, 0), 0.3);
 }
 
 /* Trash / Delete Button */
@@ -158,27 +159,27 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 20px;
   transition: all 0.3s ease;
-  color: rgba(var(--color-rgb, 139, 92, 246), 0.8);
+  color: rgba(var(--color-rgb, 230, 0, 0), 0.8);
 }
 
 .padCard:hover .playIconWrapper {
   transform: scale(1.1);
-  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.5);
-  background: linear-gradient(135deg, rgba(var(--color-rgb, 139, 92, 246), 0.2) 0%, rgba(var(--color-rgb, 139, 92, 246), 0.02) 100%);
-  color: #fff;
+  border-color: rgba(var(--color-rgb, 230, 0, 0), 0.5);
+  background: linear-gradient(135deg, rgba(var(--color-rgb, 230, 0, 0), 0.2) 0%, rgba(var(--color-rgb, 230, 0, 0), 0.02) 100%);
+  color: #ffffff;
 }
 
 .playIconWrapperActive {
-  background: rgba(var(--color-rgb, 139, 92, 246), 0.3) !important;
-  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.6) !important;
-  color: #fff !important;
+  background: rgba(var(--color-rgb, 230, 0, 0), 0.3) !important;
+  border-color: rgba(var(--color-rgb, 230, 0, 0), 0.6) !important;
+  color: #ffffff !important;
 }
 
 .pulseRing {
@@ -188,7 +189,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 2px solid rgba(var(--color-rgb, 139, 92, 246), 0.5);
+  border: 2px solid rgba(var(--color-rgb, 230, 0, 0), 0.5);
   pointer-events: none;
   z-index: 0;
   animation: wave 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
@@ -208,17 +209,17 @@
 }
 
 .padCard:hover .soundName {
-  color: #fff;
+  color: #ffffff;
 }
 
-/* Custom volume slider on the card */
+/* Custom volume slider on the card - Pure neutral dark background */
 .cardVolumeDeck {
   display: flex;
   align-items: center;
   gap: 10px;
   width: 85%;
   margin-top: 10px;
-  background: rgba(13, 17, 30, 0.5);
+  background: rgba(8, 8, 8, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   padding: 6px 12px;
@@ -239,8 +240,8 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: rgba(var(--color-rgb, 139, 92, 246), 0.9);
-  box-shadow: 0 0 6px rgba(var(--color-rgb, 139, 92, 246), 0.4);
+  background: rgba(var(--color-rgb, 230, 0, 0), 0.9);
+  box-shadow: 0 0 6px rgba(var(--color-rgb, 230, 0, 0), 0.4);
   cursor: pointer;
 }
 
@@ -252,7 +253,7 @@
   color: var(--text-secondary);
 }
 
-/* Empty Uploader State */
+/* Empty Uploader State - Pure neutral dark */
 .uploader {
   display: flex;
   flex-direction: column;
@@ -263,14 +264,14 @@
   height: 100%;
   border: 2px dashed rgba(255, 255, 255, 0.06);
   border-radius: 14px;
-  background: rgba(13, 17, 30, 0.2);
+  background: rgba(10, 10, 10, 0.35);
   transition: all 0.3s ease;
   padding: 20px;
 }
 
 .padCard:hover .uploader {
-  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.3);
-  background: rgba(var(--color-rgb, 139, 92, 246), 0.04);
+  border-color: rgba(var(--color-rgb, 230, 0, 0), 0.3);
+  background: rgba(var(--color-rgb, 230, 0, 0), 0.04);
 }
 
 .uploadIcon {
@@ -279,7 +280,7 @@
 }
 
 .padCard:hover .uploadIcon {
-  color: rgba(var(--color-rgb, 139, 92, 246), 0.8);
+  color: rgba(var(--color-rgb, 230, 0, 0), 0.8);
 }
 
 .uploadText {
@@ -293,23 +294,23 @@
   display: none;
 }
 
-/* Mixing calling notice footer */
+/* Mixing calling notice footer - Scrubbed of ALL purple or blue, replaced with solid blood red and black */
 .footerNotice {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: rgba(168, 85, 247, 0.06);
-  border: 1px solid rgba(168, 85, 247, 0.12);
+  background: rgba(230, 0, 0, 0.04);
+  border: 1px solid rgba(230, 0, 0, 0.15);
   border-radius: 12px;
   padding: 16px;
   max-width: 700px;
   width: 100%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   margin-top: 15px;
 }
 
 .noticeIcon {
-  color: #c084fc;
+  color: var(--accent-primary);
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -317,20 +318,21 @@
 .noticeText {
   font-size: 0.84rem;
   line-height: 1.5;
-  color: #cbd5e1;
+  color: #e5e7eb;
 }
 
 .noticeText strong {
-  color: #c084fc;
+  color: var(--accent-secondary);
 }
 
 .noticeText a {
-  color: #818cf8;
+  color: var(--accent-secondary);
   text-decoration: underline;
+  font-weight: 600;
 }
 
 .noticeText a:hover {
-  color: #a5b4fc;
+  color: #ffffff;
 }
 
 /* Progress Timeline (Timelapse) */
@@ -363,4 +365,3 @@
   color: var(--text-secondary);
   letter-spacing: 0.5px;
 }
-

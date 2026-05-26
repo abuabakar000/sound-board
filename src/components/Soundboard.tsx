@@ -14,9 +14,9 @@ import styles from './Soundboard.module.css';
 
 // 3 Static Pads Configuration
 const PADS_CONFIG = [
-  { id: 'pad_1', key: '1', color: '#8b5cf6', label: '1' }, // Violet
-  { id: 'pad_2', key: '2', color: '#06b6d4', label: '2' }, // Cyan
-  { id: 'pad_3', key: '3', color: '#10b981', label: '3' }, // Emerald
+  { id: 'pad_1', key: '1', color: '#ff3333', label: '1' }, // Vibrant Blood Red
+  { id: 'pad_2', key: '2', color: '#cc0000', label: '2' }, // Medium Blood Red
+  { id: 'pad_3', key: '3', color: '#990000', label: '3' }, // Deep Blood Red
 ];
 
 function hexToRgb(hex: string): string {

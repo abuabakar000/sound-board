@@ -1,25 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --bg-gradient: radial-gradient(circle at 50% 50%, #0d1224 0%, #05070f 100%);
-  --bg-base: #05070f;
-  --bg-card: rgba(22, 28, 45, 0.45);
-  --bg-card-hover: rgba(30, 38, 62, 0.6);
-  --bg-input: rgba(13, 17, 30, 0.8);
+  --bg-gradient: radial-gradient(circle at 50% 50%, #150000 0%, #000000 100%);
+  --bg-base: #000000;
+  --bg-card: rgba(12, 12, 12, 0.7);
+  --bg-card-hover: rgba(22, 12, 12, 0.85);
+  --bg-input: rgba(8, 8, 8, 0.95);
   
-  --border-glass: rgba(255, 255, 255, 0.06);
-  --border-glass-hover: rgba(255, 255, 255, 0.12);
+  --border-glass: rgba(255, 255, 255, 0.05);
+  --border-glass-hover: rgba(230, 0, 0, 0.25);
   
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: #ffffff;
+  --text-secondary: #e5e7eb; /* Neutral Light Gray */
+  --text-muted: #9ca3af; /* Neutral Medium Gray */
   
-  --accent-primary: #8b5cf6;
-  --accent-primary-rgb: 139, 92, 246;
-  --accent-secondary: #06b6d4;
+  --accent-primary: #e60000; /* Pure Blood Red */
+  --accent-primary-rgb: 230, 0, 0;
+  --accent-secondary: #ff3333; /* Crimson Glow */
   
-  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.2);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.85), 0 5px 15px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 25px rgba(230, 0, 0, 0.22);
 }
 
 * {
@@ -40,24 +40,24 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar in Solid Black & Blood Red */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(5, 7, 15, 0.8);
+  background: rgba(0, 0, 0, 0.95);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.3);
+  background: rgba(230, 0, 0, 0.35); /* Blood red thumb */
   border-radius: 99px;
-  border: 2px solid rgba(5, 7, 15, 0.8);
+  border: 2px solid rgba(0, 0, 0, 0.95);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.6);
+  background: rgba(230, 0, 0, 0.75);
 }
 
 /* Glassmorphism Presets */
@@ -76,17 +76,17 @@ html, body {
   border-color: var(--border-glass-hover);
 }
 
-/* Pulse Keyframes */
+/* Pulse Keyframes (Blood Red Glows) */
 @keyframes radialPulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(var(--pulse-color-rgb, 139, 92, 246), 0.7);
+    box-shadow: 0 0 0 0 rgba(var(--pulse-color-rgb, 230, 0, 0), 0.7);
     transform: scale(1);
   }
   50% {
     transform: scale(0.97);
   }
   100% {
-    box-shadow: 0 0 0 25px rgba(var(--pulse-color-rgb, 139, 92, 246), 0);
+    box-shadow: 0 0 0 25px rgba(var(--pulse-color-rgb, 230, 0, 0), 0);
     transform: scale(1);
   }
 }
@@ -137,24 +137,24 @@ input:focus, select:focus {
   box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.2);
 }
 
-/* Toast/Notification systems */
+/* Toast/Notification systems - Scrubbed of all purple */
 .toast {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(139, 92, 246, 0.3);
+  border: 1px solid rgba(230, 0, 0, 0.5); /* Crimson Border */
   padding: 12px 20px;
   border-radius: 12px;
-  color: #fff;
-  box-shadow: var(--shadow-lg), 0 0 15px rgba(139, 92, 246, 0.1);
+  color: #ffffff;
+  box-shadow: var(--shadow-lg), 0 0 15px rgba(230, 0, 0, 0.2);
   z-index: 9999;
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 600;
   animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
