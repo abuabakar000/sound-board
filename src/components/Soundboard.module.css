@@ -1,0 +1,366 @@
+.dashboard {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 40px;
+}
+
+/* Header Deck */
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.logoArea {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoIcon {
+  color: var(--accent-primary);
+  filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.6));
+}
+
+.logoText {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #fff 0%, #cbd5e1 50%, var(--accent-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+/* The 3-Pad Row Grid */
+.soundGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .soundGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Single Box / Pad Style */
+.padCard {
+  position: relative;
+  background: rgba(22, 28, 45, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 24px;
+  aspect-ratio: 1 / 1.1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.padCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 
+              0 0 30px rgba(var(--color-rgb, 139, 92, 246), 0.15);
+  background: rgba(30, 38, 62, 0.5);
+}
+
+.padCardActive {
+  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.8) !important;
+  background: rgba(var(--color-rgb, 139, 92, 246), 0.12) !important;
+  box-shadow: 0 0 35px rgba(var(--color-rgb, 139, 92, 246), 0.35),
+              inset 0 0 20px rgba(var(--color-rgb, 139, 92, 246), 0.1) !important;
+  transform: scale(0.97) translateY(2px) !important;
+}
+
+/* Keybind Badge */
+.keyBadge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+}
+
+.padCard:hover .keyBadge {
+  background: rgba(var(--color-rgb, 139, 92, 246), 0.25);
+  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.4);
+  box-shadow: 0 0 8px rgba(var(--color-rgb, 139, 92, 246), 0.3);
+}
+
+/* Trash / Delete Button */
+.trashBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  opacity: 0;
+  transform: translateY(-4px);
+  color: var(--text-secondary);
+  padding: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.padCard:hover .trashBtn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.trashBtn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* Sound Icon / Playing Visualizer Ring */
+.playIconWrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+  color: rgba(var(--color-rgb, 139, 92, 246), 0.8);
+}
+
+.padCard:hover .playIconWrapper {
+  transform: scale(1.1);
+  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.5);
+  background: linear-gradient(135deg, rgba(var(--color-rgb, 139, 92, 246), 0.2) 0%, rgba(var(--color-rgb, 139, 92, 246), 0.02) 100%);
+  color: #fff;
+}
+
+.playIconWrapperActive {
+  background: rgba(var(--color-rgb, 139, 92, 246), 0.3) !important;
+  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.6) !important;
+  color: #fff !important;
+}
+
+.pulseRing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(var(--color-rgb, 139, 92, 246), 0.5);
+  pointer-events: none;
+  z-index: 0;
+  animation: wave 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+/* Sound Details */
+.soundName {
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text-primary);
+  margin-top: 12px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.padCard:hover .soundName {
+  color: #fff;
+}
+
+/* Custom volume slider on the card */
+.cardVolumeDeck {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 85%;
+  margin-top: 10px;
+  background: rgba(13, 17, 30, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+
+.volumeSlider {
+  flex-grow: 1;
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.1);
+  height: 4px;
+  border-radius: 99px;
+  outline: none;
+  cursor: pointer;
+}
+
+.volumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(var(--color-rgb, 139, 92, 246), 0.9);
+  box-shadow: 0 0 6px rgba(var(--color-rgb, 139, 92, 246), 0.4);
+  cursor: pointer;
+}
+
+.volumeSlider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.volumeIcon {
+  color: var(--text-secondary);
+}
+
+/* Empty Uploader State */
+.uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  background: rgba(13, 17, 30, 0.2);
+  transition: all 0.3s ease;
+  padding: 20px;
+}
+
+.padCard:hover .uploader {
+  border-color: rgba(var(--color-rgb, 139, 92, 246), 0.3);
+  background: rgba(var(--color-rgb, 139, 92, 246), 0.04);
+}
+
+.uploadIcon {
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.padCard:hover .uploadIcon {
+  color: rgba(var(--color-rgb, 139, 92, 246), 0.8);
+}
+
+.uploadText {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.fileInput {
+  display: none;
+}
+
+/* Mixing calling notice footer */
+.footerNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(168, 85, 247, 0.06);
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  border-radius: 12px;
+  padding: 16px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
+}
+
+.noticeIcon {
+  color: #c084fc;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.noticeText {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+
+.noticeText strong {
+  color: #c084fc;
+}
+
+.noticeText a {
+  color: #818cf8;
+  text-decoration: underline;
+}
+
+.noticeText a:hover {
+  color: #a5b4fc;
+}
+
+/* Progress Timeline (Timelapse) */
+.timelineDeck {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 90%;
+  margin-top: 8px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 99px;
+}
+
+.timeLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
