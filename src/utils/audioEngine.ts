@@ -4,6 +4,11 @@ const activeSources = new Map<string, { source: AudioBufferSourceNode; gainNode:
 let masterVolumeNode: GainNode | null = null;
 let currentMasterVolume = 0.8; // default master volume 80%
 
+// Broadcast routing variables
+let broadcastStreamDestination: MediaStreamAudioDestinationNode | null = null;
+let broadcastAudioElement: HTMLAudioElement | null = null;
+let currentBroadcastDeviceId = '';
+
 export function getAudioContext(): AudioContext {
   if (typeof window === 'undefined') {
     throw new Error('AudioContext is only available in the browser.');
@@ -18,6 +23,11 @@ export function getAudioContext(): AudioContext {
     masterVolumeNode = globalAudioContext.createGain();
     masterVolumeNode.gain.value = currentMasterVolume;
     masterVolumeNode.connect(globalAudioContext.destination);
+    
+    // If a broadcast device was already set up, initialize its node in the new context
+    if (currentBroadcastDeviceId) {
+      setupBroadcastDestination(globalAudioContext);
+    }
   }
   
   // Resume if suspended (browser security)
@@ -26,6 +36,80 @@ export function getAudioContext(): AudioContext {
   }
   
   return globalAudioContext;
+}
+
+/**
+ * Setup the internal Web Audio nodes for broadcasting to a specific device.
+ */
+function setupBroadcastDestination(ctx: AudioContext) {
+  if (!broadcastStreamDestination) {
+    broadcastStreamDestination = ctx.createMediaStreamDestination();
+  }
+  
+  if (!broadcastAudioElement) {
+    broadcastAudioElement = new Audio();
+  }
+  
+  broadcastAudioElement.srcObject = broadcastStreamDestination.stream;
+  if ('setSinkId' in broadcastAudioElement) {
+    (broadcastAudioElement as any)
+      .setSinkId(currentBroadcastDeviceId)
+      .then(() => {
+        if (broadcastAudioElement) {
+          broadcastAudioElement.play().catch((err) => {
+            console.log('Audio element play deferred:', err);
+          });
+        }
+      })
+      .catch((err: any) => {
+        console.error('Failed to set sink ID:', err);
+      });
+  }
+}
+
+/**
+ * Set the target output device for the broadcast channel.
+ * Pass empty string '' to disable broadcasting.
+ */
+export async function setBroadcastDevice(deviceId: string): Promise<void> {
+  currentBroadcastDeviceId = deviceId;
+  
+  if (typeof window === 'undefined') return;
+  
+  const ctx = getAudioContext();
+  
+  if (!deviceId) {
+    // Disable broadcast routing
+    broadcastStreamDestination = null;
+    if (broadcastAudioElement) {
+      broadcastAudioElement.pause();
+      broadcastAudioElement = null;
+    }
+    return;
+  }
+  
+  setupBroadcastDestination(ctx);
+}
+
+/**
+ * Fetch all available audio output devices.
+ * Requests mic permission briefly to ensure browser exposes user-friendly labels.
+ */
+export async function getOutputDevices(): Promise<MediaDeviceInfo[]> {
+  if (typeof navigator === 'undefined' || !navigator.mediaDevices) {
+    return [];
+  }
+  
+  try {
+    // Request permission to query device labels
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    stream.getTracks().forEach(track => track.stop());
+  } catch (err) {
+    console.warn('Microphone permission not granted for device labels.', err);
+  }
+  
+  const devices = await navigator.mediaDevices.enumerateDevices();
+  return devices.filter(device => device.kind === 'audiooutput');
 }
 
 export function setMasterVolume(volume: number) {
@@ -96,12 +180,19 @@ export async function playSound(
   // Set individual sound volume
   gainNode.gain.setValueAtTime(volume, ctx.currentTime);
   
-  // Connect source -> individual gain -> master volume node -> output
+  // Connect source -> individual gain
   source.connect(gainNode);
+  
+  // 1. Route to Default Audio Output (so user hears it in headphones)
   if (masterVolumeNode) {
     gainNode.connect(masterVolumeNode);
   } else {
     gainNode.connect(ctx.destination);
+  }
+  
+  // 2. Route to Broadcast Audio Output (so Call.com hears it)
+  if (broadcastStreamDestination) {
+    gainNode.connect(broadcastStreamDestination);
   }
   
   // Add to active playing sources

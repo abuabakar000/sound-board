@@ -8,7 +8,9 @@ import {
   stopAllSounds,
   decodeAndCacheSound,
   removeSoundFromCache,
-  getSoundDuration
+  getSoundDuration,
+  getOutputDevices,
+  setBroadcastDevice
 } from '../utils/audioEngine';
 import styles from './Soundboard.module.css';
 
@@ -53,6 +55,10 @@ export default function Soundboard() {
   const startTimestamps = useRef<{ [id: string]: number }>({});
   const [toast, setToast] = useState<{ message: string; type: string } | null>(null);
   
+  // Output device state
+  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [broadcastDevice, setBroadcastDeviceState] = useState<string>('');
+
   // File input refs
   const fileRefs = {
     pad_1: useRef<HTMLInputElement>(null),
@@ -70,6 +76,57 @@ export default function Soundboard() {
       return () => clearTimeout(timer);
     }
   }, [toast]);
+
+  // Load output devices and saved broadcast device selection
+  useEffect(() => {
+    async function loadDevices() {
+      try {
+        const outDevices = await getOutputDevices();
+        setDevices(outDevices);
+        
+        // Restore previous broadcast device selection
+        const savedDevice = localStorage.getItem('sonicpad_broadcast_device') || '';
+        if (savedDevice && outDevices.some(d => d.deviceId === savedDevice)) {
+          setBroadcastDeviceState(savedDevice);
+          await setBroadcastDevice(savedDevice);
+        }
+      } catch (err) {
+        console.error('Failed to load output devices:', err);
+      }
+    }
+    loadDevices();
+    
+    // Listen for device changes (like plugging/unplugging headphones)
+    if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
+      const handleDeviceChange = async () => {
+        try {
+          const outDevices = await getOutputDevices();
+          setDevices(outDevices);
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      navigator.mediaDevices.addEventListener('devicechange', handleDeviceChange);
+      return () => {
+        navigator.mediaDevices.removeEventListener('devicechange', handleDeviceChange);
+      };
+    }
+  }, []);
+
+  // Handle dropdown output device selection
+  const handleBroadcastDeviceChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const devId = e.target.value;
+    setBroadcastDeviceState(devId);
+    localStorage.setItem('sonicpad_broadcast_device', devId);
+    try {
+      await setBroadcastDevice(devId);
+      const selectedDevice = devices.find(d => d.deviceId === devId);
+      showToast(selectedDevice ? `Broadcasting to ${selectedDevice.label}` : 'Broadcasting disabled');
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to set broadcast device', 'error');
+    }
+  };
 
   // Load pads on startup
   useEffect(() => {
@@ -294,7 +351,28 @@ export default function Soundboard() {
           </svg>
           <h1 className={styles.logoText}>SonicPad</h1>
         </div>
-        <p className={styles.subtitle}>Ultra-Simple Call Soundboard</p>
+        
+        {/* Code-Level Broadcast Device Target Selector */}
+        <div className={styles.broadcastControl}>
+          <label htmlFor="broadcast-select" className={styles.broadcastLabel}>
+            🎙️ Broadcast Target (VB-Cable):
+          </label>
+          <select
+            id="broadcast-select"
+            className={styles.broadcastSelect}
+            value={broadcastDevice}
+            onChange={handleBroadcastDeviceChange}
+          >
+            <option value="">🚫 Disabled (Headphones Only)</option>
+            {devices.map((device) => (
+              <option key={device.deviceId} value={device.deviceId}>
+                {device.label || `Output Device (${device.deviceId.substring(0, 5)})`}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        <p className={styles.subtitle}>Ultra-Simple Direct Call Soundboard</p>
       </header>
 
       {/* Grid containing exactly 3 Pads */}
@@ -413,15 +491,15 @@ export default function Soundboard() {
                   </svg>
                   <span className={styles.uploadText}>Drop audio file or click to browse</span>
                   <input
-                    type="file"
-                    ref={fileInputRef}
-                    className={styles.fileInput}
-                    accept="audio/*"
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        handleUploadFile(config.id, e.target.files[0], config);
-                      }
-                    }}
+                     type="file"
+                     ref={fileInputRef}
+                     className={styles.fileInput}
+                     accept="audio/*"
+                     onChange={(e) => {
+                       if (e.target.files && e.target.files.length > 0) {
+                         handleUploadFile(config.id, e.target.files[0], config);
+                       }
+                     }}
                   />
                 </div>
               )}
@@ -430,7 +508,7 @@ export default function Soundboard() {
         })}
       </div>
 
-      {/* Mic Routing Notice Footer */}
+      {/* Broadcast Notice Footer */}
       <footer className={styles.footerNotice}>
         <svg className={styles.noticeIcon} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
@@ -438,13 +516,12 @@ export default function Soundboard() {
           <line x1="12" y1="8" x2="12.01" y2="8"></line>
         </svg>
         <div className={styles.noticeText}>
-          <strong>🎙️ Voicemeeter Banana Setup for Calls:</strong>
+          <strong>🎙️ Super-Simple Soundboard Call Setup (Zero-Voicemeeter):</strong>
           <ol style={{ paddingLeft: '18px', marginTop: '6px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <li>Set this browser tab output (or system mixer output) to <strong>CABLE Input (VB-Audio)</strong>.</li>
-            <li>In Voicemeeter Banana, select <strong>CABLE Output</strong> as <strong>Hardware Input 2</strong> (or 3).</li>
-            <li>On that <strong>CABLE channel strip</strong>: Turn <strong>ON</strong> both <strong>A1</strong> (so you can hear the sounds yourself) and <strong>B1</strong> (so the call can hear them).</li>
-            <li>On your <strong>Microphone strip (Hardware Input 1)</strong>: Turn <strong>ON</strong> only <strong>B1</strong> (sends your voice to the call) and turn <strong>OFF</strong> A1 (so you don't hear your own voice echo).</li>
-            <li>In Discord, Zoom, or WhatsApp, set your <strong>Input Device (Microphone)</strong> to <strong>VoiceMeeter Output (VAIO)</strong>.</li>
+            <li>Set your Windows Default audio output directly to your **AirPods/Headphones** (close/uninstall Voicemeeter!).</li>
+            <li>Select **CABLE Input (VB-Audio Virtual Cable)** in the **Broadcast Target** dropdown at the top of this page.</li>
+            <li>Inside your call app (like Call.com, Zoom, or Discord), set your **Microphone (Input Device)** to **CABLE Output (VB-Audio Virtual Cable)**.</li>
+            <li>Now, when you play a sound, you will hear it in your AirPods, and Call.com will receive the clean digital sound through your virtual mic with zero echo!</li>
           </ol>
         </div>
       </footer>
